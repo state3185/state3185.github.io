@@ -1,3 +1,4 @@
+
 html, body {
   margin: 0;
   height: 100%;
@@ -11,6 +12,71 @@ html, body {
 #player iframe {
   position: relative;
   z-index: 1;
+}
+
+#parallax {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 10;
+  isolation: isolate;
+}
+
+/* shared layer styles */
+.layer {
+  position: absolute;
+  left: -150%;
+  width: 400%;
+  white-space: nowrap;
+  font-weight: 900;
+  text-align: left;
+  pointer-events: none;
+}
+
+/* BACK LAYER (slow, blurry, big) */
+.layer.back {
+  top: 20px;
+  font-size: 64px;
+  opacity: 0.25;
+  filter: blur(2px);
+  animation: scroll-back 14s linear infinite;
+}
+
+/* MID LAYER (medium speed, glitter) */
+.layer.mid {
+  top: 80px;
+  font-size: 48px;
+
+  background: linear-gradient(
+    90deg,
+    #ff00ff,
+    #00ffff,
+    #ffff00,
+    #ff00ff
+  );
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  animation:
+    scroll-mid 8s linear infinite,
+    glitter 1.2s linear infinite;
+}
+
+/* FRONT LAYER (fast, sharp, obnoxious) */
+.layer.front {
+  top: 140px;
+  font-size: 56px;
+  color: red;
+  text-shadow:
+    0 0 6px #fff,
+    0 0 12px #ff00ff,
+    0 0 24px #00ffff;
+
+  animation: scroll-front 4s linear infinite;
 }
 
 #annoying-overlay {
@@ -31,12 +97,52 @@ html, body {
   z-index: 10;
 
   animation: slide 4s linear infinite;
+background: linear-gradient(
+  90deg,
+  #ff00ff,
+  #00ffff,
+  #ffff00,
+  #ff00ff
+);
+background-size: 400% 100%;
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+
+animation:
+  slide 4s linear infinite,
+  glitter 1.2s linear infinite;
+
 }
 
+@keyframes scroll-back {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-25%); }
+}
+
+@keyframes scroll-mid {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-40%); }
+}
+
+@keyframes scroll-front {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-60%); }
+}
+
+@keyframes glitter {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
+}
 
 @keyframes slide {
   from { transform: translateX(-100%); }
   to   { transform: translateX(100%); }
+}
+
+@keyframes glitter {
+  from { background-position: 0% 50%; }
+  to   { background-position: 100% 50%; }
 }
 
 body {

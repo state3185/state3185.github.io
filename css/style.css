@@ -15,29 +15,26 @@
    -3px -3px 0 #ffff00;
 
   z-index: 999999;
+  pointer-events: none;
 
-  pointer-events: none; /* CRITICAL with your click blocker */
-
-  animation:
-    scroll 7s linear infinite,
-    bob 0.5s ease-in-out infinite alternate,
-    wobble 0.25s ease-in-out infinite alternate;
+  animation: chaos 6s linear infinite;
 }
 
-@keyframes scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+@keyframes chaos {
+  0% {
+    transform: translateX(0) rotate(-1deg);
+    top: 10px;
+  }
+  50% {
+    transform: translateX(-25%) rotate(1deg);
+    top: 50px;
+  }
+  100% {
+    transform: translateX(-50%) rotate(-1deg);
+    top: 10px;
+  }
 }
 
-@keyframes bob {
-  from { top: 10px; }
-  to   { top: 50px; }
-}
-
-@keyframes wobble {
-  from { transform: rotate(-1deg); }
-  to   { transform: rotate(1deg); }
-}
 body {
     background: #181A1B;
 }

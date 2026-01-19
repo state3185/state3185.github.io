@@ -1,17 +1,19 @@
-
 html, body {
   margin: 0;
   height: 100%;
+  background: #181A1B;
 }
 
 #root {
   position: relative;
-  isolation: isolate;   /* 🔑 forces new stacking context */
+  isolation: isolate;
 }
 
+#player,
 #player iframe {
   position: relative;
   z-index: 1;
+  pointer-events: none;
 }
 
 #parallax {
@@ -24,18 +26,16 @@ html, body {
   isolation: isolate;
 }
 
-/* shared layer styles */
 .layer {
   position: absolute;
   left: -150%;
   width: 400%;
   white-space: nowrap;
   font-weight: 900;
-  text-align: left;
   pointer-events: none;
 }
 
-/* BACK LAYER (slow, blurry, big) */
+/* BACK LAYER */
 .layer.back {
   top: 20px;
   font-size: 64px;
@@ -44,29 +44,19 @@ html, body {
   animation: scroll-back 14s linear infinite;
 }
 
-/* MID LAYER (medium speed, glitter) */
+/* MID LAYER */
 .layer.mid {
   top: 80px;
   font-size: 48px;
-
-  background: linear-gradient(
-    90deg,
-    #ff00ff,
-    #00ffff,
-    #ffff00,
-    #ff00ff
-  );
+  background: linear-gradient(90deg,#ff00ff,#00ffff,#ffff00,#ff00ff);
   background-size: 400% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-
-  animation:
-    scroll-mid 8s linear infinite,
-    glitter 1.2s linear infinite;
+  animation: scroll-mid 8s linear infinite, glitter 1.2s linear infinite;
 }
 
-/* FRONT LAYER (fast, sharp, obnoxious) */
+/* FRONT LAYER */
 .layer.front {
   top: 140px;
   font-size: 56px;
@@ -75,85 +65,14 @@ html, body {
     0 0 6px #fff,
     0 0 12px #ff00ff,
     0 0 24px #00ffff;
-
   animation: scroll-front 4s linear infinite;
 }
 
-#annoying-overlay {
-  position: fixed;
-  top: 20px;
-  left: -100%;
-  width: 300%;
+/* SCROLL ANIMATIONS */
+@keyframes scroll-back { from {transform: translateX(0);} to {transform: translateX(-25%);} }
+@keyframes scroll-mid  { from {transform: translateX(0);} to {transform: translateX(-40%);} }
+@keyframes scroll-front{ from {transform: translateX(0);} to {transform: translateX(-60%);} }
 
-  white-space: nowrap;
+/* GLITTER ANIMATION */
+@keyframes glitter { from {background-position:0% 50%;} to {background-position:100% 50%;} }
 
-  font-size: 48px;
-  font-weight: 900;
-  text-align: left;
-
-  color: red;
-  pointer-events: none;
-
-  z-index: 10;
-
-  animation: slide 4s linear infinite;
-background: linear-gradient(
-  90deg,
-  #ff00ff,
-  #00ffff,
-  #ffff00,
-  #ff00ff
-);
-background-size: 400% 100%;
--webkit-background-clip: text;
-background-clip: text;
-color: transparent;
-
-animation:
-  slide 4s linear infinite,
-  glitter 1.2s linear infinite;
-
-}
-
-@keyframes scroll-back {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-25%); }
-}
-
-@keyframes scroll-mid {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-40%); }
-}
-
-@keyframes scroll-front {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-60%); }
-}
-
-@keyframes glitter {
-  from { background-position: 0% 50%; }
-  to   { background-position: 100% 50%; }
-}
-
-@keyframes slide {
-  from { transform: translateX(-100%); }
-  to   { transform: translateX(100%); }
-}
-
-@keyframes glitter {
-  from { background-position: 0% 50%; }
-  to   { background-position: 100% 50%; }
-}
-
-body {
-    background: #181A1B;
-}
-
-#player {
-  position: relative;
-  z-index: 1;
-  pointer-events: none;
-}
-iframe {
-    pointer-events: none;
-}

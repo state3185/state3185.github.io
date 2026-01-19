@@ -1,34 +1,43 @@
 #annoying-overlay {
   position: fixed;
   top: 20px;
-  left: -100%;
-  width: 300%;
+  left: -150%;
+  width: 400%;
+  white-space: nowrap;
+
   font-size: 3rem;
   font-weight: 900;
   font-family: Comic Sans MS, Impact, sans-serif;
+
   color: #ff00ff;
   text-shadow:
-    2px 2px 0 #00ffff,
-   -2px -2px 0 #ffff00;
-  white-space: nowrap;
-  pointer-events: none;
-  z-index: 9999;
+    3px 3px 0 #00ffff,
+   -3px -3px 0 #ffff00;
+
+  z-index: 999999;
+
+  pointer-events: none; /* CRITICAL with your click blocker */
 
   animation:
-    scroll-left 8s linear infinite,
-    bob 0.6s ease-in-out infinite alternate;
+    scroll 7s linear infinite,
+    bob 0.5s ease-in-out infinite alternate,
+    wobble 0.25s ease-in-out infinite alternate;
 }
 
-@keyframes scroll-left {
+@keyframes scroll {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
 
 @keyframes bob {
   from { top: 10px; }
-  to   { top: 40px; }
+  to   { top: 50px; }
 }
 
+@keyframes wobble {
+  from { transform: rotate(-1deg); }
+  to   { transform: rotate(1deg); }
+}
 body {
     background: #181A1B;
 }

@@ -8,11 +8,6 @@ html, body {
   isolation: isolate;   /* 🔑 forces new stacking context */
 }
 
-#player {
-  position: relative;
-  z-index: 1;
-}
-
 #player iframe {
   position: relative;
   z-index: 1;
@@ -21,21 +16,23 @@ html, body {
 #annoying-overlay {
   position: fixed;
   top: 20px;
-  left: 0;
-  right: 0;
+  left: -100%;
+  width: 300%;
+
+  white-space: nowrap;
 
   font-size: 48px;
   font-weight: 900;
-  text-align: center;
+  text-align: left;
 
   color: red;
-  background: rgba(255,255,0,0.3); /* DEBUG VISIBILITY */
   pointer-events: none;
 
   z-index: 10;
 
   animation: slide 4s linear infinite;
 }
+
 
 @keyframes slide {
   from { transform: translateX(-100%); }
@@ -47,11 +44,10 @@ body {
 }
 
 #player {
-    pointer-events: none;
-    position: absolute;
-    margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
 }
-
 iframe {
     pointer-events: none;
 }

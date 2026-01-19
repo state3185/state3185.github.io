@@ -28,13 +28,28 @@ html, body {
   min-height: 100vh;
   min-width: 177.77vh;
 }
+
 .layer {
   position: absolute;
-  left: -150%;
-  width: 400%;
+  left: 0;           /* Start at 0 instead of -150% to see it immediately */
+  width: 1000%;      /* Massive width for the scrolling loop */
   white-space: nowrap;
   font-weight: 900;
   pointer-events: none;
+  line-height: 1.2;  /* Gives the text physical height */
+  display: block;    /* Ensures it renders as a block level element */
+}
+
+/* Add this to #parallax to ensure it covers the screen */
+#parallax {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden; /* This is crucial so text doesn't create scrollbars */
 }
 
 /* BACK LAYER */

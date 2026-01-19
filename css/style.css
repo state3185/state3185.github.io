@@ -1,69 +1,45 @@
-#annoying-overlay {
-  position: fixed;
-  top: 20px;
-  left: -150%;
-  width: 400%;
-  white-space: nowrap;
-
-  font-size: 3rem;
-  font-weight: 900;
-  font-family: Comic Sans MS, Impact, sans-serif;
-
-  color: #ff00ff;
-  text-shadow:
-    3px 3px 0 #00ffff,
-   -3px -3px 0 #ffff00;
-
-  pointer-events: none;
-
-  z-index: 2147483647; /* max practical z-index */
-
-  animation: chaos 6s linear infinite;
+html, body {
+  margin: 0;
+  height: 100%;
 }
 
-#player,
+#root {
+  position: relative;
+  isolation: isolate;   /* 🔑 forces new stacking context */
+}
+
+#player {
+  position: relative;
+  z-index: 1;
+}
+
 #player iframe {
   position: relative;
   z-index: 1;
 }
+
 #annoying-overlay {
   position: fixed;
   top: 20px;
-  left: -150%;
-  width: 400%;
-  white-space: nowrap;
+  left: 0;
+  right: 0;
 
-  font-size: 3rem;
+  font-size: 48px;
   font-weight: 900;
-  font-family: Comic Sans MS, Impact, sans-serif;
+  text-align: center;
 
-  color: #ff00ff;
-  text-shadow:
-    3px 3px 0 #00ffff,
-   -3px -3px 0 #ffff00;
-
-  z-index: 999999;
+  color: red;
+  background: rgba(255,255,0,0.3); /* DEBUG VISIBILITY */
   pointer-events: none;
 
-animation:
-  scroll 7s linear infinite,
-  bob 0.5s ease-in-out infinite alternate;
+  z-index: 10;
 
+  animation: slide 4s linear infinite;
 }
 
-@keyframes chaos {
-  0% {
-    transform: translateX(0) rotate(-1deg);
-    top: 10px;
-  }
-  50% {
-    transform: translateX(-25%) rotate(1deg);
-    top: 50px;
-  }
-  100% {
-    transform: translateX(-50%) rotate(-1deg);
-    top: 10px;
-  }
+@keyframes slide {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
 }
 
 body {

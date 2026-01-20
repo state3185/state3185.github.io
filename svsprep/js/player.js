@@ -46,29 +46,27 @@ function onPlayerReady(event) {
 
 // 4. The Trigger
 function launchRickroll() {
-    console.log("Click detected!"); // Check your F12 console for this!
-    
-    // 1. IMMEDIATELY hide the overlay (even if YT fails)
-    const overlay = document.getElementById('overlay');
-    if (overlay) overlay.style.setProperty('display', 'none', 'important');
-
-    // 2. Show the parallax
+    // 1. UI Transition First
+    document.getElementById('overlay').style.display = 'none';
     const parallax = document.getElementById('parallax');
     if (parallax) parallax.style.display = 'block';
 
-    // 3. Try the Audio
-    if (player && typeof player.unMute === 'function') {
-        try {
-            player.unMute();
-            player.setVolume(100);
-            player.playVideo();
-            console.log("Rickroll audio initiated.");
-        } catch (err) {
-            console.error("Audio failed but visuals are running:", err);
-        }
+    // 2. The Audio "Hammer"
+    if (player && playerReady) {
+        // We do this in a specific order to force the browser to recognize the intent
+        player.playVideo(); 
+        player.unMute();
+        player.setVolume(100);
+        
+        // Double-check check
+        setTimeout(() => {
+            if (player.isMuted()) {
+                player.unMute();
+                player.setVolume(100);
+            }
+        }, 100);
     }
 }
-
 function revealChaos() {
     document.getElementById('overlay').style.display = 'none';
     const parallax = document.getElementById('parallax');

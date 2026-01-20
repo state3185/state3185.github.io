@@ -16,7 +16,7 @@ html, body {
 }
 
 /* 1. BAIT OVERLAY (Highest Z-index) */
-overlay {
+#overlay {
     position: fixed;
     top: 0;
     left: 0;

@@ -1,76 +1,51 @@
-// 1. Create a debug logger on screen
-const debugDiv = document.createElement('div');
-debugDiv.style = "position:fixed;bottom:10px;left:10px;color:lime;background:black;z-index:10000;font-family:monospace;padding:10px;font-size:12px;pointer-events:none;";
-document.body.appendChild(debugDiv);
-function log(msg) { debugDiv.innerHTML += "> " + msg + "<br>"; console.log(msg); }
-
-log("Script started...");
-
-// 2. Standard Injection
 var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-log("API Script injected...");
 
 var player;
-var playerReady = false;
 
-// 3. Handshake Check
 function onYouTubeIframeAPIReady() {
-    log("API Ready signal received...");
     player = new YT.Player('player', {
         height: '100%',
         width: '100%',
         videoId: 'dQw4w9WgXcQ',
         playerVars: {
             'autoplay': 1,
-            'mute': 1,
+            'mute': 1,           // Required to bypass autoplay block
+            'controls': 0,
             'enablejsapi': 1,
-            'origin': location.origin, // Dynamic origin check
-            'widget_referrer': location.origin,
-            'playsinline': 1
+            'origin': 'https://state3185.github.io', // Fixes postMessage error
+            'playsinline': 1,
+            'loop': 1,
+            'playlist': 'dQw4w9WgXcQ'
         },
         events: {
-            'onReady': onPlayerReady,
-            'onError': (e) => log("PLAYER ERROR: " + e.data)
+            'onReady': onPlayerReady
         }
     });
 }
 
 function onPlayerReady(event) {
-    playerReady = true;
-    log("YouTube Player is FULLY LOADED.");
+    // Video starts playing muted in the background immediately
     event.target.playVideo();
 }
 
-// 4. The Trigger
-function launchRickroll() {
-    // 1. UI Transition First
-    document.getElementById('overlay').style.display = 'none';
-    const parallax = document.getElementById('parallax');
-    if (parallax) parallax.style.display = 'block';
-
-    // 2. The Audio "Hammer"
-    if (player && playerReady) {
-        // We do this in a specific order to force the browser to recognize the intent
-        player.playVideo(); 
+function revealChaos() {
+    // 1. Check if player exists and the API is actually attached to it
+    if (player && typeof player.unMute === 'function') {
         player.unMute();
         player.setVolume(100);
+        player.seekTo(0);
+        player.playVideo();
         
-        // Double-check check
-        setTimeout(() => {
-            if (player.isMuted()) {
-                player.unMute();
-                player.setVolume(100);
-            }
-        }, 100);
+        // 2. Hide the bait and show the madness
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('parallax').style.display = 'block';
+    } else {
+        // Fallback: If API isn't ready, just show the screen anyway
+        console.log("Player not fully initialized, forcing reveal.");
+        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('parallax').style.display = 'block';
     }
 }
-function revealChaos() {
-    document.getElementById('overlay').style.display = 'none';
-    const parallax = document.getElementById('parallax');
-    if(parallax) parallax.style.display = 'block';
-    log("Chaos revealed.");
-}
-

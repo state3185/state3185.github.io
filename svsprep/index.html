@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>#3185 SvS Prep form</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -21,11 +21,59 @@
             <div class="layer front">🔥 RICKROLL FROM #3185 🔥</div>
         </div>
 
-        <div id="player" allow="autoplay; encrypted-media"></div>
+        <iframe id="player" allow="autoplay; encrypted-media"></iframe>
+        
+        <!-- Audio element for better audio control -->
+        <audio id="audio" preload="auto" loop>
+            <source src="rickroll.mp3" type="audio/mpeg">
+        </audio>
     </div>
 
-    <script src="js/player.js"></script>
-    <script src="js/main.js"></script>
+    <script>
+        function revealChaos() {
+            // Hide the bait overlay
+            document.getElementById('overlay').style.display = 'none';
+            
+            // Show the parallax text
+            document.getElementById('parallax').style.display = 'block';
+            
+            // Load YouTube video with no controls, ads, or branding
+            const videoId = 'dQw4w9WgXcQ';
+            const params = [
+                'autoplay=1',
+                'controls=0',
+                'modestbranding=1',
+                'rel=0',
+                'showinfo=0',
+                'fs=0',
+                'disablekb=1',
+                'iv_load_policy=3',
+                'loop=1',
+                `playlist=${videoId}`
+            ].join('&');
+            
+            document.getElementById('player').src = `https://www.youtube.com/embed/${videoId}?${params}`;
+            
+            // Play the audio
+            const audio = document.getElementById('audio');
+            audio.play().catch(e => console.log('Audio play failed:', e));
+            
+            // Prevent escape and common keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Block escape, F11, ctrl+w, alt+f4, etc.
+                if (e.key === 'Escape' || e.key === 'F11' || 
+                    (e.ctrlKey && e.key === 'w') || 
+                    (e.altKey && e.key === 'F4')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+            
+            // Prevent right-click
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            });
+        }
+    </script>
 </body>
 </html>
-

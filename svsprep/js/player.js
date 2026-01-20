@@ -7,10 +7,12 @@ function onYouTubeIframeAPIReady() {
         videoId: 'dQw4w9WgXcQ',
         playerVars: {
             'autoplay': 1,
-            'mute': 1,           // Start muted to ensure load
+            'mute': 1,
             'controls': 0,
             'enablejsapi': 1,
-            'origin': window.location.origin, // Crucial for security clearance
+            // CHANGE THIS: Use your actual GitHub Pages URL
+            'origin': 'https://state3185.github.io', 
+            'widget_referrer': 'https://state3185.github.io',
             'playsinline': 1,
             'rel': 0,
             'loop': 1,
@@ -21,7 +23,6 @@ function onYouTubeIframeAPIReady() {
         }
     });
 }
-
 function onPlayerReady(event) {
     event.target.playVideo();
 }

@@ -15,30 +15,15 @@ html, body {
   height: 100vh;
 }
 
-/* VIDEO PLAYER */
-#player {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-#player iframe {
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
+/* 1. BAIT OVERLAY (Highest Z-index) */
 #overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #202124; /* Dark mode look */
-    z-index: 9999; /* Stay on top */
+    background-color: #202124; 
+    z-index: 9999; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,7 +38,7 @@ html, body {
     align-items: center;
     gap: 10px;
     font-family: sans-serif;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
 .bait-content span {
@@ -61,13 +46,7 @@ html, body {
     font-weight: 500;
 }
 
-/* Make sure your player is visible but behind the overlay initially */
-#player {
-    position: relative;
-    z-index: 1;
-}
-
-/* PARALLAX CONTAINER */
+/* 2. PARALLAX CONTAINER (Middle Z-index) */
 #parallax {
   position: absolute;
   top: 0;
@@ -77,30 +56,47 @@ html, body {
   z-index: 999;
   pointer-events: none;
   overflow: hidden;
+  /* Hide text until the bait is clicked if you want the surprise to be total */
+  display: none; 
 }
 
-/* SHARED LAYER STYLES */
+/* 3. VIDEO PLAYER (Bottom Z-index) */
+#player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#player iframe {
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Prevents them from clicking 'Pause' */
+}
+
+/* --- ANIMATIONS & LAYERS --- */
+
 .layer {
   position: absolute;
   left: 0; 
-  width: 800%; /* Long width to prevent gaps during slow scrolls */
+  width: 800%;
   white-space: nowrap;
   font-weight: 900;
   text-transform: uppercase;
   line-height: 1.2;
 }
 
-/* BACK LAYER - Slower & Higher Opacity */
 .layer.back {
   top: 15%;
   font-size: 90px;
-  opacity: 0.5; /* Increased from 0.3 for better visibility */
+  opacity: 0.5;
   color: #ffffff;
   filter: blur(2px);
-  animation: scroll-back 40s linear infinite; /* Much slower */
+  animation: scroll-back 40s linear infinite;
 }
 
-/* MID LAYER - The Glittering Text */
 .layer.mid {
   top: 45%;
   font-size: 65px;
@@ -112,43 +108,19 @@ html, body {
   animation: scroll-mid 25s linear infinite, glitter 3s linear infinite;
 }
 
-/* FRONT LAYER - Red Glow + Bounce Effect */
 .layer.front {
   top: 75%;
   font-size: 80px;
   color: #ff0000;
-  text-shadow:
-    0 0 10px #fff,
-    0 0 20px #ff00ff,
-    0 0 40px #00ffff;
-  /* Added 'bounce' animation here */
+  text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 40px #00ffff;
   animation: scroll-front 12s linear infinite, bounce 3s ease-in-out infinite;
 }
 
-/* SCROLL ANIMATIONS (Slower speeds) */
-@keyframes scroll-back { 
-  from { transform: translateX(0); } 
-  to { transform: translateX(-25%); } 
-}
-
-@keyframes scroll-mid { 
-  from { transform: translateX(0); } 
-  to { transform: translateX(-35%); } 
-}
-
-@keyframes scroll-front { 
-  from { transform: translateX(0); } 
-  to { transform: translateX(-50%); } 
-}
-
-/* GLITTER ANIMATION */
-@keyframes glitter { 
-  0% { background-position: 0% 50%; } 
-  100% { background-position: 200% 50%; } 
-}
-
-/* NEW BOUNCE ANIMATION */
+@keyframes scroll-back { from { transform: translateX(0); } to { transform: translateX(-25%); } }
+@keyframes scroll-mid { from { transform: translateX(0); } to { transform: translateX(-35%); } }
+@keyframes scroll-front { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes glitter { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 @keyframes bounce {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  50% { transform: translateY(-25px); } /* Moves the front text up and down */
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-25px); }
 }

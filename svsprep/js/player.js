@@ -1,71 +1,73 @@
-// 1. DYNAMIC INJECTION (Fixes the "CORS header missing" error)
+// 1. Create a debug logger on screen
+const debugDiv = document.createElement('div');
+debugDiv.style = "position:fixed;bottom:10px;left:10px;color:lime;background:black;z-index:10000;font-family:monospace;padding:10px;font-size:12px;pointer-events:none;";
+document.body.appendChild(debugDiv);
+function log(msg) { debugDiv.innerHTML += "> " + msg + "<br>"; console.log(msg); }
+
+log("Script started...");
+
+// 2. Standard Injection
 var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+log("API Script injected...");
 
 var player;
 var playerReady = false;
 
-// 2. API INITIALIZATION
+// 3. Handshake Check
 function onYouTubeIframeAPIReady() {
+    log("API Ready signal received...");
     player = new YT.Player('player', {
         height: '100%',
         width: '100%',
-        videoId: 'dQw4w9WgXcQ', // Rickroll ID
+        videoId: 'dQw4w9WgXcQ',
         playerVars: {
             'autoplay': 1,
-            'mute': 1,           // Required to bypass autoplay block
-            'controls': 0,
-            'enablejsapi': 1,    // Required for JS control
-            'origin': 'https://state3185.github.io', // FIXES postMessage error
-            'widget_referrer': 'https://state3185.github.io',
-            'playsinline': 1,
-            'rel': 0,
-            'loop': 1,
-            'playlist': 'dQw4w9WgXcQ'
+            'mute': 1,
+            'enablejsapi': 1,
+            'origin': location.origin, // Dynamic origin check
+            'widget_referrer': location.origin,
+            'playsinline': 1
         },
         events: {
             'onReady': onPlayerReady,
-            'onError': onPlayerError
+            'onError': (e) => log("PLAYER ERROR: " + e.data)
         }
     });
 }
 
 function onPlayerReady(event) {
     playerReady = true;
+    log("YouTube Player is FULLY LOADED.");
     event.target.playVideo();
 }
 
-function onPlayerError(e) {
-    console.error("YouTube API Error:", e.data);
-}
-
-// 3. THE TRAP (Triggered by your Bait Button)
+// 4. The Trigger
 function launchRickroll() {
-    // If the player is ready, unmute and show the chaos
+    log("Button clicked. Checking player status...");
+    
     if (playerReady && player && typeof player.unMute === 'function') {
-        try {
-            player.unMute();
-            player.setVolume(100);
-            player.seekTo(0);
-            player.playVideo();
-            
-            // UI Transition
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('parallax').style.display = 'block';
-        } catch (e) {
-            console.error("Unmute failed, forcing UI anyway:", e);
-            forceShow();
-        }
+        log("Success! Unmuting now...");
+        player.unMute();
+        player.setVolume(100);
+        player.playVideo();
+        revealChaos();
     } else {
-        // If API is being slow/blocked, try again in 200ms
-        console.warn("Player not ready, retrying...");
-        setTimeout(launchRickroll, 200);
+        log("Player NOT ready (API blocked or slow). Force-starting...");
+        // If the API failed, we still want the visual prank to happen
+        revealChaos();
+        if(player && player.playVideo) {
+            player.playVideo(); // Last ditch effort
+        }
     }
 }
 
-function forceShow() {
+function revealChaos() {
     document.getElementById('overlay').style.display = 'none';
-    document.getElementById('parallax').style.display = 'block';
+    const parallax = document.getElementById('parallax');
+    if(parallax) parallax.style.display = 'block';
+    log("Chaos revealed.");
 }
+

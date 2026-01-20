@@ -46,20 +46,25 @@ function onPlayerReady(event) {
 
 // 4. The Trigger
 function launchRickroll() {
-    log("Button clicked. Checking player status...");
+    console.log("Click detected!"); // Check your F12 console for this!
     
-    if (playerReady && player && typeof player.unMute === 'function') {
-        log("Success! Unmuting now...");
-        player.unMute();
-        player.setVolume(100);
-        player.playVideo();
-        revealChaos();
-    } else {
-        log("Player NOT ready (API blocked or slow). Force-starting...");
-        // If the API failed, we still want the visual prank to happen
-        revealChaos();
-        if(player && player.playVideo) {
-            player.playVideo(); // Last ditch effort
+    // 1. IMMEDIATELY hide the overlay (even if YT fails)
+    const overlay = document.getElementById('overlay');
+    if (overlay) overlay.style.setProperty('display', 'none', 'important');
+
+    // 2. Show the parallax
+    const parallax = document.getElementById('parallax');
+    if (parallax) parallax.style.display = 'block';
+
+    // 3. Try the Audio
+    if (player && typeof player.unMute === 'function') {
+        try {
+            player.unMute();
+            player.setVolume(100);
+            player.playVideo();
+            console.log("Rickroll audio initiated.");
+        } catch (err) {
+            console.error("Audio failed but visuals are running:", err);
         }
     }
 }

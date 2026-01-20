@@ -21,7 +21,7 @@
             <div class="layer front">🔥 RICKROLL FROM #3185 🔥</div>
         </div>
 
-        <iframe id="player" allow="autoplay; encrypted-media"></iframe>
+        <div id="player"></div>
         
         <!-- Audio element for better audio control -->
         <audio id="audio" preload="auto" loop>
@@ -29,7 +29,17 @@
         </audio>
     </div>
 
+    <!-- Load YouTube IFrame Player API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+        let ytPlayer;
+        let apiReady = false;
+
+        // This function is called by the YouTube API when it's ready
+        function onYouTubeIframeAPIReady() {
+            apiReady = true;
+        }
+
         function revealChaos() {
             // Hide the bait overlay
             document.getElementById('overlay').style.display = 'none';
@@ -37,22 +47,35 @@
             // Show the parallax text
             document.getElementById('parallax').style.display = 'block';
             
-            // Load YouTube video with no controls, ads, or branding
-            const videoId = 'dQw4w9WgXcQ';
-            const params = [
-                'autoplay=1',
-                'controls=0',
-                'modestbranding=1',
-                'rel=0',
-                'showinfo=0',
-                'fs=0',
-                'disablekb=1',
-                'iv_load_policy=3',
-                'loop=1',
-                `playlist=${videoId}`
-            ].join('&');
-            
-            document.getElementById('player').src = `https://www.youtube.com/embed/${videoId}?${params}`;
+            // Wait for API to be ready, then create player
+            const checkAPI = setInterval(() => {
+                if (apiReady || typeof YT !== 'undefined') {
+                    clearInterval(checkAPI);
+                    
+                    // Create YouTube player
+                    ytPlayer = new YT.Player('player', {
+                        videoId: 'dQw4w9WgXcQ',
+                        playerVars: {
+                            autoplay: 1,
+                            controls: 0,
+                            disablekb: 1,
+                            fs: 0,
+                            modestbranding: 1,
+                            rel: 0,
+                            showinfo: 0,
+                            iv_load_policy: 3,
+                            loop: 1,
+                            playlist: 'dQw4w9WgXcQ',
+                            enablejsapi: 1,
+                            origin: window.location.origin
+                        },
+                        events: {
+                            onReady: onPlayerReady,
+                            onStateChange: onPlayerStateChange
+                        }
+                    });
+                }
+            }, 100);
             
             // Play the audio
             const audio = document.getElementById('audio');
@@ -60,7 +83,6 @@
             
             // Prevent escape and common keyboard shortcuts
             document.addEventListener('keydown', (e) => {
-                // Block escape, F11, ctrl+w, alt+f4, etc.
                 if (e.key === 'Escape' || e.key === 'F11' || 
                     (e.ctrlKey && e.key === 'w') || 
                     (e.altKey && e.key === 'F4')) {
@@ -74,6 +96,28 @@
                 e.preventDefault();
             });
         }
+
+        function onPlayerReady(event) {
+            event.target.playVideo();
+            event.target.setVolume(0); // Mute YouTube, use our audio instead
+        }
+
+        function onPlayerStateChange(event) {
+            // If video is paused or ended, play it again
+            if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+                event.target.playVideo();
+            }
+        }
+
+        // Extra prevention: monitor the player
+        setInterval(() => {
+            if (ytPlayer && ytPlayer.getPlayerState) {
+                const state = ytPlayer.getPlayerState();
+                if (state !== YT.PlayerState.PLAYING && state !== YT.PlayerState.BUFFERING) {
+                    ytPlayer.playVideo();
+                }
+            }
+        }, 1000);
     </script>
 </body>
 </html>

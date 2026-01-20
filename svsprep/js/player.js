@@ -1,3 +1,9 @@
+// This part injects the API without triggering the CORS "read" block
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
 var player;
 
 function onYouTubeIframeAPIReady() {
@@ -10,9 +16,7 @@ function onYouTubeIframeAPIReady() {
             'mute': 1,
             'controls': 0,
             'enablejsapi': 1,
-            // CHANGE THIS: Use your actual GitHub Pages URL
-            'origin': 'https://state3185.github.io', 
-            'widget_referrer': 'https://state3185.github.io',
+            'origin': 'https://state3185.github.io', // Matches your domain
             'playsinline': 1,
             'rel': 0,
             'loop': 1,
@@ -23,8 +27,21 @@ function onYouTubeIframeAPIReady() {
         }
     });
 }
+
 function onPlayerReady(event) {
     event.target.playVideo();
+}
+
+function launchRickroll() {
+    if (player && typeof player.unMute === 'function') {
+        player.unMute();
+        player.setVolume(100);
+        player.playVideo();
+        
+        document.getElementById('overlay').style.display = 'none';
+        // Reveal the parallax text
+        document.getElementById('parallax').style.display = 'block';
+    }
 }
 
 function launchRickroll() {

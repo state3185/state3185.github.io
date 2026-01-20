@@ -31,6 +31,42 @@ html, body {
   pointer-events: none;
 }
 
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #202124; /* Dark mode look */
+    z-index: 9999; /* Stay on top */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.bait-content {
+    background: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: sans-serif;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.bait-content span {
+    color: #3c4043;
+    font-weight: 500;
+}
+
+/* Make sure your player is visible but behind the overlay initially */
+#player {
+    position: relative;
+    z-index: 1;
+}
+
 /* PARALLAX CONTAINER */
 #parallax {
   position: absolute;

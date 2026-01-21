@@ -18,7 +18,7 @@
         <div id="parallax">
             <div class="layer back">✨ HELLO SVS OPPONENT ✨</div>
             <div class="layer mid">💎 NEVER GONNA GIVE YOU UP 💎</div>
-            <div class="layer front">🔥 RICKROLL FROM #3185 🔥</div>
+            <div class="layer front">🔥 PRESIDENTIAL RICKROLL FROM #3185 🔥</div>
         </div>
 
         <div id="player"></div>
@@ -34,6 +34,7 @@
     <script>
         let ytPlayer;
         let apiReady = false;
+        let effectsTriggered = false;
 
         // This function is called by the YouTube API when it's ready
         function onYouTubeIframeAPIReady() {
@@ -43,9 +44,6 @@
         function revealChaos() {
             // Hide the bait overlay
             document.getElementById('overlay').style.display = 'none';
-            
-            // Show the parallax text
-            document.getElementById('parallax').style.display = 'block';
             
             // Wait for API to be ready, then create player
             const checkAPI = setInterval(() => {
@@ -77,10 +75,6 @@
                 }
             }, 100);
             
-            // Play the audio
-            const audio = document.getElementById('audio');
-            audio.play().catch(e => console.log('Audio play failed:', e));
-            
             // Prevent escape and common keyboard shortcuts
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' || e.key === 'F11' || 
@@ -100,9 +94,31 @@
         function onPlayerReady(event) {
             event.target.playVideo();
             event.target.setVolume(0); // Mute YouTube, use our audio instead
+            
+            // Delay parallax and audio for sync
+            setTimeout(() => {
+                // Show the parallax text
+                document.getElementById('parallax').style.display = 'block';
+                
+                // Play the audio
+                const audio = document.getElementById('audio');
+                audio.play().catch(e => console.log('Audio play failed:', e));
+            }, 2000); // 2 second delay, or wait for video to actually start playing
         }
 
         function onPlayerStateChange(event) {
+            // Trigger effects when video starts playing (if not already triggered)
+            if (event.data === YT.PlayerState.PLAYING && !effectsTriggered) {
+                effectsTriggered = true;
+                
+                // Show the parallax text
+                document.getElementById('parallax').style.display = 'block';
+                
+                // Play the audio
+                const audio = document.getElementById('audio');
+                audio.play().catch(e => console.log('Audio play failed:', e));
+            }
+            
             // If video is paused or ended, play it again
             if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
                 event.target.playVideo();

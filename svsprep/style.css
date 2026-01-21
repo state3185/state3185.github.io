@@ -84,7 +84,8 @@ html, body {
 .layer {
   position: absolute;
   left: 0; 
-  width: 800%;
+  width: 100%;
+  text-align: center;
   white-space: nowrap;
   font-weight: 900;
   text-transform: uppercase;
@@ -92,38 +93,57 @@ html, body {
 }
 
 .layer.back {
-  top: 15%;
-  font-size: 90px;
-  opacity: 0.5;
+  top: 20%;
+  font-size: clamp(40px, 8vw, 90px); /* Responsive font size */
+  opacity: 0.7;
   color: #ffffff;
-  filter: blur(2px);
-  animation: scroll-back 40s linear infinite;
+  filter: blur(1px);
+  animation: scroll-back-forth 15s ease-in-out infinite;
 }
 
 .layer.mid {
   top: 45%;
-  font-size: 65px;
+  font-size: clamp(30px, 6vw, 65px);
   background: linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: scroll-mid 25s linear infinite, glitter 3s linear infinite;
+  animation: scroll-mid-forth 12s ease-in-out infinite, glitter 3s linear infinite;
 }
 
 .layer.front {
-  top: 75%;
-  font-size: 80px;
+  top: 70%;
+  font-size: clamp(35px, 7vw, 80px);
   color: #ff0000;
   text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 40px #00ffff;
-  animation: scroll-front 12s linear infinite, bounce 3s ease-in-out infinite;
+  animation: scroll-front-forth 10s ease-in-out infinite, bounce 3s ease-in-out infinite;
 }
 
-@keyframes scroll-back { from { transform: translateX(0); } to { transform: translateX(-25%); } }
-@keyframes scroll-mid { from { transform: translateX(0); } to { transform: translateX(-35%); } }
-@keyframes scroll-front { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@keyframes glitter { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+@keyframes scroll-back-forth {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes scroll-mid-forth {
+  0% { transform: translateX(100%); }
+  50% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes scroll-front-forth {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes glitter { 
+  0% { background-position: 0% 50%; } 
+  100% { background-position: 200% 50%; } 
+}
+
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-25px); }
+  50% { transform: translateY(-15px); }
 }

@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>#3185 SvS Prep form</title>
-<!-- Google Tag Manager -->
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FGS64DHYD4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-FGS64DHYD4');
-</script>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FGS64DHYD4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FGS64DHYD4');
+    </script>
 </head>
 
 <body>
-  <div id="root">
+    <div id="root">
         <div id="overlay" onclick="revealChaos()">
             <div class="bait-content">
                 <img src="https://ssl.gstatic.com/docs/doclist/images/mediatype/icon_1_spreadsheet_x16.png" width="16">
@@ -51,6 +51,12 @@
         }
 
         function revealChaos() {
+            // Track the click in Google Analytics
+            gtag('event', 'rickroll_clicked', {
+                'event_category': 'engagement',
+                'event_label': 'fake_google_sheets'
+            });
+            
             // Hide the bait overlay
             document.getElementById('overlay').style.display = 'none';
             
@@ -119,6 +125,12 @@
             // Trigger effects when video starts playing (if not already triggered)
             if (event.data === YT.PlayerState.PLAYING && !effectsTriggered) {
                 effectsTriggered = true;
+                
+                // Track the rickroll starting in Google Analytics
+                gtag('event', 'rickroll_started', {
+                    'event_category': 'engagement',
+                    'event_label': 'video_playing'
+                });
                 
                 // Show the parallax text
                 document.getElementById('parallax').style.display = 'block';
